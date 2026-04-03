@@ -5,11 +5,11 @@
 # Пример вывода:
 # Перевернутый словарь: {1: ['a', 'c'], 2: ['b'], 3: ['d']}
 
-# data = {"a": 1, "b": 2, "c": 1, "d": 3}
-# new_data = {}
-# for key, value in data.items():
-#     new_data.setdefault(value, []).append(key)
-# print("Перевернутый словарь:", new_data)
+data = {"a": 1, "b": 2, "c": 1, "d": 3}
+new_data = {}
+for key, value in data.items():
+    new_data.setdefault(value, []).append(key)
+print("Перевернутый словарь:", new_data)
 
 # task2 Счётчик букв в словах.
 # Напишите программу, которая подсчитывает количество каждой буквы в заданных словах и создаёт словарь, где ключи — это слова, а значения — это ещё один словарь с подсчётом каждой буквы.
@@ -18,17 +18,17 @@
 # Пример вывода:
 # {'anna': {'a': 2, 'n': 2}, 'bennet': {'b': 1, 'e': 2, 'n': 2, 't': 1}, 'john': {'j': 1, 'o': 1, 'h': 1, 'n': 1}}
 
-# words = ["anna", "bennet", "john"]
-# new_dict1 = {}
-# for word in words:
-#     new_dict2 = {}
-#     for l in word:
-#         if l not in new_dict2:
-#             new_dict2.setdefault(l, 1)
-#         else:
-#             new_dict2[l] += 1
-#     new_dict1[word] = new_dict2
-# print(new_dict1)
+words = ["anna", "bennet", "john"]
+new_dict1 = {}
+for word in words:
+    new_dict2 = {}
+    for c in word:
+        if c not in new_dict2:
+            new_dict2.setdefault(c, 1)
+        else:
+            new_dict2[c] += 1
+    new_dict1[word] = new_dict2
+print(new_dict1)
 
 #task3 Распределение студентов по группам.
 # У вас есть словарь, где ключи — имена студентов, а значения — их баллы за экзамен.
@@ -45,16 +45,16 @@
 # Распределение по группам:
 # {'Отличники': {'Аня': 92, 'Дима': 88}, 'Хорошисты': {'Боря': 76}, 'Троечники': {'Ваня': 65, 'Ева': 54}, 'Не сдали': {'Галя': 48}}
 
-# students = {"Аня": 92, "Боря": 76, "Ваня": 65, "Галя": 48, "Дима": 88, "Ева": 54}
-# results = {}
-# for student, score in students.items():
-#     if score >= 85:
-#         group = "Отличники"
-#     elif 70 <= score <= 84:
-#         group = "Хорошисты"
-#     elif 50 <= score <= 69:
-#         group = "Троечники"
-#     else:
-#         group = "Не сдали"
-#     results.setdefault(group, {})[student] = score
-# print(results)
+students = {"Аня": 92, "Боря": 76, "Ваня": 65, "Галя": 48, "Дима": 88, "Ева": 54}
+results = {}
+for student, score in students.items():
+    if score >= 85:
+        group = "Отличники"
+    elif 70 <= score <= 84:
+        group = "Хорошисты"
+    elif 50 <= score <= 69:
+        group = "Троечники"
+    else:
+        group = "Не сдали"
+    results.setdefault(group, {})[student] = score
+print(results)
