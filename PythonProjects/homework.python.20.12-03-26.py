@@ -5,14 +5,15 @@
 # Пример вывода:
 # Число 17 является простым
 
+num = 9
 def prime_number(n):
     is_prime_number = True if n / n == 1 and n % 2 == 1 else False
     for i in range(2, n):
         if n % i == 0:
             is_prime_number = False
             break
-    return f'Число {n} является простым: {is_prime_number}'
-print(prime_number(9))
+    return is_prime_number
+print(f"Число {num} является простым: {prime_number(num)}")
 
 #task2 Фильтрация чисел по чётности.
 # Напишите функцию, которая принимает filter_type ("even" или "odd") и произвольное количество чисел, возвращая только те, которые соответствуют фильтру.
