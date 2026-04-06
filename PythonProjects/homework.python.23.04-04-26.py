@@ -45,5 +45,5 @@ def ball_sum(lst: list[dict]) -> str | int:
     :return: Выводит обработанный список словарей в виде суммы чисел.
     '''
     res_scores = map(lambda x: sum(x["scores"]), lst)
-    return f'Итоговый балл: {sum(res_scores)}'
-print(ball_sum(data))
+    return sum(res_scores)
+print(f"Итоговый балл: {ball_sum(data)}")
