@@ -16,16 +16,16 @@
 
 import os
 import sys
-# path_to_dir = sys.argv[1]
-# print(f'Содержимое директории: {path_to_dir}')
-# print('Папки:')
-# for root, dirs, files in os.walk(path_to_dir):
-#     for dir in dirs:
-#         print(f"-{dir}\n")
-# print('Файлы:')
-# for root, dirs, files in os.walk(path_to_dir):
-#     for file in files:
-#         print(f"-{file}\n")
+path_to_dir = sys.argv[1]
+print(f'Содержимое директории: {path_to_dir}')
+print('Папки:')
+for root, dirs, files in os.walk(path_to_dir):
+    for dir in dirs:
+        print(f"-{dir}\n")
+print('Файлы:')
+for root, dirs, files in os.walk(path_to_dir):
+    for file in files:
+        print(f"-{file}\n")
 
 #task2 Поиск и удаление файлов с указанным расширением.
 # Напишите программу, которая:
