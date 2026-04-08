@@ -45,13 +45,14 @@ for root, dirs, files in os.walk(path_to_dir):
 # Удаление завершено.
 
 path_to_dir = sys.argv[1]
+file_extension = sys.argv[2]
 for dirpath, dirnames, filenames in os.walk(path_to_dir):
     for filename in filenames:
-        if filename.endswith(".log"):
-            print(f'Найден файл с расширением ".log":\n -{os.path.join(dirpath, filename)}')
+        if filename.endswith(file_extension):
+            print(f'Найден файл с расширением "{file_extension}":\n - {os.path.join(dirpath, filename)}')
             flag = True
             while flag:
-                user_answer = input('Вы хотите ли удалить этот файл? (y/n): ').lower()
+                user_answer = input('Вы хотите ли удалить этот файл? (y/n): ')
                 try:
                     if user_answer not in ('y', 'n'):
                         raise ValueError('Вы ввели неподходящий символ по регистру или значению, надо ввести y(да) или n(нет).')
