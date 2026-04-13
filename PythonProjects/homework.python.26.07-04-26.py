@@ -62,7 +62,6 @@ for dirpath, dirnames, filenames in os.walk(path_to_dir):
                     if user_answer == 'y':
                         os.remove(os.path.join(dirpath, filename))
                         print('Удаление завершено.')
-                        flag = False
                     else:
                         pass
-                        flag = False
+                    flag = False
