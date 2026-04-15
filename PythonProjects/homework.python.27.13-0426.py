@@ -15,7 +15,7 @@ target_word_user = input('Введите ключевое слово: ')
 def filter_by_key_word(target_file: str, target_word: str) -> str:
     '''
     Функция принимает относительный или полный путь к файлу, а также ключевое слово для поиска в файле. После обрабатывает линии файла и ищет в них указанное слово,
-    а затем создает новый файл называя его <ключевое слово>_<название файла> и передавая в него линии где встретилось указанное слово.)
+    а затем создает новый файл называя его <ключевое слово>_<название файла> и передавая в него линии где встретилось указанное слово. Если файла нет выбивает ошибку.
     :param target_file: Принимает относительный или полный путь к файлу.
     :param target_word: Принимает ключевое слово для поиска в файле.
     :return: Строку со статусом выполнения функции(файл был создан или нет).
@@ -54,6 +54,12 @@ except FileNotFoundError:
 
 target_file_user = input("Введите имя файла: ")
 def duplicate_finder_and_remover(target_file: str) -> str:
+    '''
+    Функция принимает полный или относительный путь к файлу, перебирая его линии и записует все уникальные строки в новый файл с названием <unique>_<название файла>.
+    Если в файле нет повторяющихся строк, то функция создает копию файла с названием <copy>_<название файла>. Если файла нет выбивает ошибку.
+    :param target_file: Принимает полный или относительный путь к файлу.
+    :return: Строку с результатом выполнения функции.
+    '''
     with open(target_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     unique_lines_set = set()
@@ -68,10 +74,10 @@ def duplicate_finder_and_remover(target_file: str) -> str:
             fi.writelines(lines)
         return f"Дубликатов не обнаружено. Создана точная копия {new_filename}."
     else:
-        new_filename = f"unique_{target_file}"
-        with open(new_filename, 'w', encoding='utf-8') as fi:
+        new_filename1 = f"copy_{target_file}"
+        with open(new_filename1, 'w', encoding='utf-8') as fi:
             fi.writelines(unique_lines)
-        return f"Дубликаты удалены. Уникальные строки сохранены в {new_filename}."
+        return f"Дубликаты удалены. Уникальные строки сохранены в {new_filename1}."
 
 try:
     print(duplicate_finder_and_remover(target_file_user))
