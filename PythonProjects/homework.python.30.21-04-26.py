@@ -41,6 +41,12 @@
 #     }
 # }
 def count_students_in_json(x):
+    """
+    Функция принимает название json файла с данными, внутри себя импортирует модуль json для обработки файла и
+    возвращает сколько учащихся из json файла.
+    :param x: Принимает название файла json.
+    :return: Int число количество учащихся.
+    """
     import json
     res = 0
     with open(x, 'r') as f:
@@ -53,6 +59,12 @@ def count_students_in_json(x):
 print(count_students_in_json('student_courses.json'))
 
 def get_student_age_avg(x):
+    """
+    Функция принимает название json файла с данными, внутри себя импортирует модуль json для обработки файла и
+    модуль datetime для обработки дат в файле и возвращает средний возраст учащихся из json файла.
+    :param x: Принимает название файла json.
+    :return: Число равное среднему возрасту учащихся.
+    """
     import json
     from datetime import datetime
     students_ages = []
@@ -68,6 +80,12 @@ def get_student_age_avg(x):
 print(get_student_age_avg('student_courses.json'))
 
 def count_students_in_courses(x):
+    """
+    Функция принимает название json файла с данными, внутри себя импортирует модуль json для обработки файла и
+    выводит словарь с ключем<название курса> и значением<количество учеников в этом курсе> из json файла.
+    :param x: Принимает название файла json.
+    :return: Dict с ключем<название курса> и значением<количество учеников в этом курсе>.
+    """
     import json
     all_courses = {}
     with open(x, 'r') as f:
@@ -83,16 +101,24 @@ def count_students_in_courses(x):
     return all_courses
 print(count_students_in_courses('student_courses.json'))
 
-def save_to_json(filename):
+def save_to_json(x):
+    """
+        Функция принимает название json файла с данными, внутри себя импортирует модуль json лдя обработки файла и
+        использует 3 функции(1.count_students_in_json, 2.get_student_age_avg, 3.count_students_in_courses) для создания
+        нового json файла с названием <student_courses_report.json>, добавляя в него вывод данных из функций.
+        При запуске функции файл <> перезаписывается или создается при его отсутствие.
+        :param x: Принимает название файла json.
+        :return: Строку об выполнение функции.
+        """
     import json
     new_data = {
-        "total_students": count_students_in_json("student_courses.json"),
-        "average_enrollment_age": get_student_age_avg("student_courses.json"),
-        "students_per_course": count_students_in_courses("student_courses.json")
+        "total_students": count_students_in_json(x),
+        "average_enrollment_age": get_student_age_avg(x),
+        "students_per_course": count_students_in_courses(x)
     }
     data_list = []
     data_list.append(new_data)
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open('student_courses_report.json', 'w', encoding='utf-8') as f:
         json.dump(data_list, f, ensure_ascii=False, indent=4)
     return f'done'
-print(save_to_json('student_courses_report.json'))
+print(save_to_json('student_courses.json'))
