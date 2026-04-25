@@ -13,7 +13,21 @@
 # 21
 # 34
 
-def fibonacci(a=0, b=1):
+from typing import Generator
+def fibonacci(a: int =0 ,b: int =1) -> Generator[int, None, None]:
+    '''
+    Функция генерирует последовательность Фибоначчи(Фибоначчи — это ряд чисел, где каждое следующее число равно сумме двух предыдущих.).
+    По умолчанию начинается с 0 и 1.
+    :param a: Принимает число(int), по умолчанию =0.
+    :param b: Принимает число(int), по умолчанию =1.
+    :return: Выводит генератор, генерирующий последовательность Фибоначчи бесконечно.
+    '''
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise TypeError('Аргументы a и b должны быть целыми числами(int).')
+    if a < 0 or b < 0:
+        raise ValueError('Числа Фибоначчи не могут быть отрицательными.')
+    if b < a:
+        raise ValueError('Второе число(b) должно быть больше или равно первому(a).')
     while True:
         yield a
         a, b = b, a + b
@@ -43,7 +57,7 @@ for n, i in enumerate(gen1):
     if n >= 10:
         break
 
-#task2 Генератор уникальных элементов
+#task2 Генератор уникальных элементов.
 # Создайте генератор, который принимает список элементов и выдаёт только уникальные значения, сохраняя порядок их появления в исходном списке.
 # Данные:
 # data = [3, 1, 2, 3, 4, 1, 5, 2, 6, 7, 5, 8]
@@ -59,23 +73,33 @@ for n, i in enumerate(gen1):
 
 #BAD при работе с большим файлом съест много памяти
 data = [3, 1, 2, 3, 4, 1, 5, 2, 6, 7, 5, 8]
-def unic_elements(lst):
-    unique = [unique for i, unique in enumerate(lst) if unique not in lst[:i]]
-    yield from unique
+# def unic_elements(lst):
+#     unique = [unique for i, unique in enumerate(lst) if unique not in lst[:i]]
+#     yield from unique
+#
+#
+# for item in unic_elements(data):
+#     print(item)
+# print(20 * '-')
 
-
-for item in unic_elements(data):
-    print(item)
-print(20 * '-')
-
-def unic_elements_v2(lst):
+def unic_elements_v2(lst: list) -> Generator[int, None, None]:
+    '''
+    Функция принимает список элементов и выдает генератор только уникальных элементов из списка не изменяя его, а также
+    сохраняет порядок вывода элементов как в исходном списке.
+    :param lst: Принимает список.
+    :return: Выводит генератор только уникальных элементов из списка.
+    '''
+    if not isinstance(lst, list):
+        raise TypeError(f"В переменную lst был передан не список.")
+    if not lst:
+        raise ValueError("Переданный список пуст")
     new_set = set()
     for item in lst:
         if item not in new_set:
             yield item
             new_set.add(item)
 
-
+print(20 *'-')
 gen2 = unic_elements_v2(data)
 print(next(gen2))
 print(next(gen2))
