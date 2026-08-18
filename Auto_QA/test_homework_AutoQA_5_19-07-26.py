@@ -42,12 +42,12 @@ class TestIframeText:
 
 
 #task2 Тестирование Drag & Drop (Перетаскивание изображения в корзину)
-PAGE_URL = "https://www.globalsqa.com/demo-site/draganddrop/"
-
+PAGE_URL_DND = "https://www.globalsqa.com/demo-site/draganddrop/"
 def get_firefox_options():
     options = Options()
     options.set_preference("network.proxy.type", 0)
     return options
+
 
 @pytest.fixture
 def driver():
@@ -56,65 +56,44 @@ def driver():
     yield firefox
     firefox.quit()
 
+
 def close_gdpr_popup(driver):
     try:
         WebDriverWait(driver, timeout=7).until(EC.presence_of_element_located((By.TAG_NAME, "button")))
         buttons = driver.find_elements(By.TAG_NAME, "button")
-        agree_button = None
         for button in buttons:
-            text = button.text.strip()
-            if text in ("Соглашаюсь", "Agree", "Accept", "OK"):
-                agree_button = button
+            if button.text.strip() in ("Соглашаюсь", "Agree", "Accept", "OK"):
+                button.click()
+                WebDriverWait(driver, timeout=5).until(EC.staleness_of(button))
                 break
-        if agree_button:
-            agree_button.click()
-            WebDriverWait(driver, timeout=5).until(EC.staleness_of(agree_button))
     except Exception:
         pass
 
+
 def find_demo_iframe(driver):
-    iframes = driver.find_elements(By.TAG_NAME, "iframe")
-    for iframe in iframes:
-        src = iframe.get_attribute("src") or ""
-        if "photo-manager" in src:
+    for iframe in driver.find_elements(By.TAG_NAME, "iframe"):
+        if "photo-manager" in (iframe.get_attribute("src") or ""):
             return iframe
     return None
 
+
 class TestDragAndDrop:
     def test_dragged_photo_to_trash(self, driver):
-        driver.get(PAGE_URL)
+        driver.get(PAGE_URL_DND)
         wait = WebDriverWait(driver, timeout=15)
         close_gdpr_popup(driver)
-        wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
         demo_iframe = wait.until(lambda d: find_demo_iframe(d))
         driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", demo_iframe)
-        time.sleep(1)
+        wait.until(EC.visibility_of(demo_iframe))
         driver.switch_to.frame(demo_iframe)
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gallery li")))
         first_photo = driver.find_element(By.CSS_SELECTOR, "#gallery li:first-child")
         trash = driver.find_element(By.CSS_SELECTOR, "#trash")
         photos_before = driver.find_elements(By.CSS_SELECTOR, "#gallery li")
-        assert len(photos_before) == 4, (f"Ожидалось 4 фото, получили: {len(photos_before)}")
-        source_loc = first_photo.location
-        source_size = first_photo.size
-        target_loc = trash.location
-        target_size = trash.size
-        start_x = source_loc["x"] + source_size["width"] // 2
-        start_y = source_loc["y"] + source_size["height"] // 2
-        end_x = target_loc["x"] + target_size["width"] // 2
-        end_y = target_loc["y"] + target_size["height"] // 2
-        steps = 10
-        step_x = (end_x - start_x) / steps
-        step_y = (end_y - start_y) / steps
-        ActionChains(driver).click_and_hold(first_photo).perform()
-        time.sleep(0.3)
-        for _ in range(steps):
-            ActionChains(driver).move_by_offset(step_x, step_y).perform()
-            time.sleep(0.05)
-        ActionChains(driver).release().perform()
+        assert len(photos_before) == 4, (f"Ожидалось 4 фото, получили: {len(photos_before)}" )
+        ActionChains(driver).drag_and_drop(first_photo, trash).perform()
         wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, "#gallery li")) == 3)
         photos_in_gallery = driver.find_elements(By.CSS_SELECTOR, "#gallery li")
         photos_in_trash = driver.find_elements(By.CSS_SELECTOR, "#trash li")
         assert len(photos_in_gallery) == 3, (f"В галерее должно быть 3 фото, осталось: {len(photos_in_gallery)}")
         assert len(photos_in_trash) == 1, (f"В корзине должно быть 1 фото, найдено: {len(photos_in_trash)}")
-        
